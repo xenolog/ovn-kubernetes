@@ -43,14 +43,18 @@ SSL="true"
 # FIXME(mestery): Remove once Vagrant boxes allow apt-get to work again
 sudo rm -rf /var/lib/apt/lists/*
 
+# Add additional repos
+sudo add-apt-repository ppa:gophers/archive
+sudo sed -i "/^# deb-src/s/^# //g" /etc/apt/sources.list
+sudo apt update
+
 # Add external repos to install docker and OVS from packages.
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates
+sudo apt install -y apt-transport-https ca-certificates
 echo "deb https://packages.wand.net.nz $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/wand.list
 sudo curl https://packages.wand.net.nz/keyring.gpg -o /etc/apt/trusted.gpg.d/wand.gpg
 sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 sudo su -c "echo \"deb https://apt.dockerproject.org/repo ubuntu-xenial main\" >> /etc/apt/sources.list.d/docker.list"
-sudo apt-get update
+sudo apt update
 
 # First, install docker
 sudo apt-get purge lxc-docker
@@ -59,7 +63,7 @@ sudo apt-get install -y docker-engine
 sudo service docker start
 
 # Install OVS and dependencies
-sudo apt-get build-dep dkms
+sudo apt-get build-dep dkms -y
 sudo apt-get install python-six openssl -y
 
 sudo apt-get install openvswitch-datapath-dkms=2.8.1-1 -y
@@ -80,9 +84,11 @@ else
 fi
 
 # Install golang
-wget -nv https://dl.google.com/go/go1.9.2.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.9.2.linux-amd64.tar.gz
-export PATH="/usr/local/go/bin:echo $PATH"
+# wget -nv https://dl.google.com/go/go1.9.2.linux-amd64.tar.gz
+# sudo tar -C /usr/local -xzf go1.9.2.linux-amd64.tar.gz
+# export PATH="/usr/local/go/bin:echo $PATH"
+sudo apt install -y golang-1.9-go
+export PATH="/usr/lib/go-1.9/bin:$PATH"
 export GOPATH=$HOME/work
 
 # Setup CNI directory
