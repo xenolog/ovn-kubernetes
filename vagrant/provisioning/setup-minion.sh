@@ -21,9 +21,9 @@ GW_IP=$7
 OVN_EXTERNAL=$8
 
 if [ -n "$OVN_EXTERNAL" ]; then
-    PUBLIC_IP=`ifconfig enp0s9 | grep 'inet addr' | cut -d: -f2 | awk '{print $1}'`
-    PUBLIC_SUBNET_MASK=`ifconfig enp0s9 | grep 'inet addr' | cut -d: -f4`
-    GW_IP=`grep 'option routers' /var/lib/dhcp/dhclient.enp0s9.leases | head -1 | sed -e 's/;//' | awk '{print $3}'`
+    PUBLIC_IP=`ifconfig eth2 | grep 'inet addr' | cut -d: -f2 | awk '{print $1}'`
+    PUBLIC_SUBNET_MASK=`ifconfig eth2 | grep 'inet addr' | cut -d: -f4`
+    GW_IP=`grep 'option routers' /var/lib/dhcp/dhclient.eth2.leases | head -1 | sed -e 's/;//' | awk '{print $3}'`
 fi
 
 cat > setup_minion_args.sh <<EOL
@@ -38,7 +38,7 @@ OVN_EXTERNAL=$8
 EOL
 
 # Comment out the next line if you prefer TCP instead of SSL.
-SSL="true"
+#SSL="true"
 
 # FIXME(mestery): Remove once Vagrant boxes allow apt-get to work again
 sudo rm -rf /var/lib/apt/lists/*

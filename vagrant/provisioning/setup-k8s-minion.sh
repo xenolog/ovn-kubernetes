@@ -78,7 +78,7 @@ nohup sudo ovnkube -k8s-kubeconfig $HOME/kubeconfig.yaml -loglevel=4 \
     -sb-client-privkey /etc/openvswitch/ovncontroller-privkey.pem \
     -sb-client-cert /etc/openvswitch/ovncontroller-cert.pem \
     -sb-client-cacert /etc/openvswitch/ovnsb-ca.cert \
-    -init-gateways -gateway-interface=enp0s9 -gateway-nexthop="$GW_IP" \
+    -init-gateways -gateway-interface=eth2 -gateway-nexthop="$GW_IP" \
     -service-cluster-ip-range=172.16.1.0/24 \
     -cluster-subnet="192.168.0.0/16" 2>&1 &
 else
@@ -89,7 +89,7 @@ nohup sudo ovnkube -k8s-kubeconfig $HOME/kubeconfig.yaml -loglevel=4 \
     -nodeport \
     -nb-address="$PROTOCOL://$MASTER_OVERLAY_IP:6631" \
     -sb-address="$PROTOCOL://$MASTER_OVERLAY_IP:6632" -k8s-token="test" \
-    -init-gateways -gateway-interface=enp0s9 -gateway-nexthop="$GW_IP" \
+    -init-gateways -gateway-interface=eth2 -gateway-nexthop="$GW_IP" \
     -service-cluster-ip-range=172.16.1.0/24 \
     -cluster-subnet="192.168.0.0/16" 2>&1 &
 fi
